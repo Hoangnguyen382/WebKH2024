@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fc642982404449df90bbb1987b533b49" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="ShopQuanAoModel.sysdiagram" Width="1.5" PointX="7.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.DanhMuc" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.NhapHang" Width="1.5" PointX="6.25" PointY="7.625" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.NhaCungCap" Width="1.5" PointX="13.125" PointY="6.875" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_NhapHang_NhaCungCap" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.ChiTietNhapHang" Width="2.25" PointX="9.375" PointY="5.5" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietNhapHang_NhapHang" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.Review" Width="1.5" PointX="6.125" PointY="4" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.ChucNang" Width="1.5" PointX="4.75" PointY="19.5" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.PhanQuyenChucNang" Width="1.5" PointX="7" PointY="16.625" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_PhanQuyenChucNang_ChucNang" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.TaiKhoan" Width="1.5" PointX="2.375" PointY="10.5" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_NhapHang_TaiKhoan" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_PhanQuyenChucNang_TaiKhoan" />
+        <AssociationConnector Association="ShopQuanAoModel.FK__Review__TaiKhoan__6ABAD62E" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.DonHang" Width="1.5" PointX="4.625" PointY="0.75" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_DonHang_TaiKhoan" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.SanPham" Width="1.5" PointX="2.75" PointY="4.125" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietNhapHang_SanPham" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_SanPham_DanhMuc" />
+        <AssociationConnector Association="ShopQuanAoModel.FK__Review__SanPhamI__69C6B1F5" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.ChiTietDonHang" Width="1.5" PointX="6.625" PointY="11.375" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietDonHang_DonHang" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietDonHang_SanPham" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.ChiTietCombo" Width="1.5" PointX="9" PointY="9.125" />
+        <EntityTypeShape EntityType="ShopQuanAoModel.ComboKhuyenMai" Width="1.5" PointX="6.75" PointY="22.875" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietCombo_ComboKhuyenMai" />
+        <AssociationConnector Association="ShopQuanAoModel.FK_ChiTietCombo_SanPham" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

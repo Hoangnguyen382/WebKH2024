@@ -1,0 +1,74 @@
+﻿@model WebKH2024.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "Chi Tiết Tài Khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var ListQuyen = new WebKH2024.Models.mapPhanQuyenChucNang().QuyenTaiKhoan(Model.TaiKhoanID);
+    var ListNhom = ListQuyen.Select(m => m.NhomChucNang).Distinct();
+
+}
+<div class="row">
+    <div class="col-md-4">
+        <h4 style="font-size: 19px">Thông tin tài khoản: <strong>@Model.Username</strong></h4>
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-info">Username</th>
+                <td>@Html.DisplayFor(model => model.Username)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Password</th>
+                <td>@Html.DisplayFor(model => model.Password)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Họ Và Tên</th>
+                <td>@Html.DisplayFor(model => model.HoTen)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Email</th>
+                <td>@Html.DisplayFor(model => model.Email)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Số Điện Thoại</th>
+                <td>@Html.DisplayFor(model => model.SoDienThoai)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Địa Chỉ</th>
+                <td>@Html.DisplayFor(model => model.DiaChi)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Ngày Tạo</th>
+                <td>@Html.DisplayFor(model => model.NgayTao)</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.TaiKhoanID }, new { @class = "btn btn-sm btn-success" }) |
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-sm btn-warning" })
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4 style="font-size: 18px">Phân Quyền</h4>
+        <table class="table table-bordered">
+            @foreach(var nhom in ListNhom)
+            {
+                var listCN = ListQuyen.Where(m => m.NhomChucNang == nhom).ToList();
+                <tr>
+                    <td>@nhom</td>
+                    @foreach(var item in listCN)
+                {
+                    <td> 
+                        <form action="~/Admin/TaiKhoan/LuuPhanQuyen" id="@Model.TaiKhoanID-@item.Code">
+                            <input type="hidden" name="TaiKhoanID" value="@Model.TaiKhoanID" />
+                            <input type="hidden" name="ChucNang" value="@item.Code" />
+                            <input type="checkbox" @(item.DaChon > 0 ? "checked" : "") value="true" name="check" onchange="$('#@Model.TaiKhoanID-@item.Code').submit()"/>
+                            @item.Mota
+                        </form>
+                       
+                    </td>
+                }
+                </tr>
+            }
+        </table>
+    </div>
+</div>

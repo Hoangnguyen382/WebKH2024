@@ -1,0 +1,71 @@
+﻿@model WebKH2024.Models.ComboKhuyenMai
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var i = 1;
+}
+<link href="~/assets/css/combo.css" rel="stylesheet" />
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10">
+            <h4 class="section-title mb-4">Combo Khuyến Mãi</h4>
+
+            <form action="@Url.Action("AddComboToCart", "GioHang")" method="post" class="p-4 border rounded shadow-sm bg-light combo-form">
+                <input type="hidden" name="comboId" value="@Model.ComboID" />
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Ảnh</th>
+                                <th>Giá</th>
+                                <th>Số Lượng</th>
+                                <th>Size</th>
+                                <th>Màu Sắc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in new WebKH2024.Models.mapChiTietCombo().DanhSach(Model.ComboID))
+                            {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>@item.SanPham.TenSanPham</td>
+                                    <td><img src="@item.SanPham.HinhAnh" class="img-fluid img-thumbnail product-image"></td>
+                                    <td>@string.Format("{0:#,0}", item.SanPham.GiaBan) ₫</td>
+                                    <td>@item.SoLuong</td>
+                                    <td>
+                                        <select name="Size_@item.SanPham.SanPhamID" class="form-control">
+                                            <option value="S" @(item.Size == "S" ? "selected" : "")>S</option>
+                                            <option value="M" @(item.Size == "M" ? "selected" : "")>M</option>
+                                            <option value="L" @(item.Size == "L" ? "selected" : "")>L</option>
+                                            <option value="XL" @(item.Size == "XL" ? "selected" : "")>XL</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="MauSac_@item.SanPham.SanPhamID" class="form-control">
+                                            <option value="Đỏ" @(item.MauSac == "Đỏ" ? "selected" : "")>Đỏ</option>
+                                            <option value="Xanh" @(item.MauSac == "Xanh" ? "selected" : "")>Xanh</option>
+                                            <option value="Vàng" @(item.MauSac == "Vàng" ? "selected" : "")>Vàng</option>
+                                            <option value="Trắng" @(item.MauSac == "Trắng" ? "selected" : "")>Trắng</option>
+                                        </select>
+                                    </td>
+
+                                </tr>
+
+                                <!-- Hidden inputs để gửi dữ liệu khi submit -->
+                                <input type="hidden" name="SanPhamID[]" value="@item.SanPham.SanPhamID" />
+                                <input type="hidden" name="SoLuong_@item.SanPham.SanPhamID" value="@item.SoLuong" />
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Thêm vào Giỏ Hàng</button>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model WebKH2024.Models.DonHang
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hóa Đơn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .header, .footer {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .table th, .table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Hóa Đơn Mua Hàng</h2>
+        <p>Ngày lập: @string.Format("{0:dd-MM-yyyy}", Model.NgayDatHang)</p>
+        <p><strong>Khách hàng:</strong> @Model.NguoiNhan</p>
+        <p><strong>Địa chỉ giao hàng:</strong> @Model.DiaChiGiaoHang</p>
+        <p><strong>Số điện thoại:</strong> @Model.SoDienThoai</p>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá bán</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ChiTietDonHangs)
+            {
+                <tr>
+                    <td>@item.TenSanPham</td>
+                    <td>@item.SoLuong</td>
+                    <td>@string.Format("{0:#,0}", item.GiaBan)</td>
+                    <td>@string.Format("{0:#,0}", item.ThanhTien)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p><strong>Tổng tiền:</strong> @string.Format("{0:#,0}", Model.TongTien)</p>
+    </div>
+</body>
+</html>

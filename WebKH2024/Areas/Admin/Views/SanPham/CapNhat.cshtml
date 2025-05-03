@@ -1,0 +1,107 @@
+﻿@model WebKH2024.Models.SanPham
+
+@{
+    ViewBag.Title = "CapNhat";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Cập Nhật Sản Phẩm</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.SanPhamID)
+    <input type="hidden" name="HinhAnh" value="@Model.HinhAnh" />
+
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Tên Sản Phẩm</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Mô Tả Sản Phẩm</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 5 })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Giá Niêm Yết</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.GiaNiemYet, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+            @Html.ValidationMessageFor(model => model.GiaNiemYet, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Số Lượng</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+            @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Danh Mục</label>
+        <div class="col-md-4">
+            <select class="form-control" name="DanhMucID">
+                <option value="">Chọn danh mục</option>
+                @foreach (var item in new WebKH2024.Models.mapSanPham().LayDanhMuc())
+                {
+                    <option value="@item.DanhMucID" @(Model.DanhMucID == item.DanhMucID ? "selected" : "")>@item.TenDanhMuc</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.DanhMucID, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Khuyễn Mãi</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.KhuyenMai, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KhuyenMai, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Size</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Màu Sắc</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.MauSac, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MauSac, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Trạng Thái</label>
+        <div class="col-md-4">
+            <select class="form-control" name="TrangThai">
+                <option value="true" @(Model.TrangThai == true ? "selected" : "")>Còn Hàng</option>
+                <option value="false" @(Model.TrangThai == false ? "selected" : "")>Hết Hàng</option>
+            </select>
+            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Ngày Tạo</label>
+        <div class="col-md-4">
+            <input type="datetime-local" name="NgayTao" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayTao)" />
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

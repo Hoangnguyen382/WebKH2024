@@ -1,0 +1,102 @@
+﻿@model IEnumerable<WebKH2024.Models.ComboKhuyenMai>
+@{
+    ViewBag.Title = "Combo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.menu = "Combo";
+}
+<!-- Thêm CSS cho Slick Carousel -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+<!-- Thêm jQuery và Slick Carousel vào cuối trang (trước thẻ đóng </body>) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+<!-- CSS cho combo -->
+<link href="~/assets/css/ComboIndex.css" rel="stylesheet" />
+<!-- Promotion Combo -->
+
+<section class="promo-combo">
+    <!-- Banner -->
+    <div class="promo-banner">
+        <div class="banner-image" style="background-image: url('/assets/images/slide-03.jpg');">
+            <div class="banner-info">
+                <h2>Special Promotion Combo</h2>
+                <p>From <strong></strong> to <strong>31 August 2024</strong></p>
+                <a href="products.html" class="btn-shop-now">Shop Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="container p-t-40">
+        <div class="combo-label">Combo Khuyến Mãi</div>
+        <div class="slider">
+            @foreach (var item in Model)
+            {
+                if (item.TrangThai == true)
+                {
+                    <div class="combo-item shadow-sm rounded overflow-hidden">
+                        <div class="combo-pic">
+                            <img src="@item.HinhAnh" alt="IMG-COMBO" class="img-fluid">
+                        </div>
+                        <div class="combo-txt p-3">
+                            <h6 class="combo-name text-dark">@item.TenCombo</h6>
+                            <div class="combo-info small text-muted">
+                                <p>@item.MoTa</p>
+                            </div>
+                            <div class="combo-price mt-2">
+                                <span class="stext-105 cl3 price-sale">
+                                    @string.Format("{0:#,0}", item.GiaCombo) VNĐ
+                                </span>
+                            </div>
+                            <a href="@Url.Action("ChiTiet", new { id = item.ComboID })" class="btn-view-details btn btn-primary mt-2 w-100">
+                                Quick View
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.slider').slick({
+            dots: false, // Tắt dấu chấm
+            infinite: true,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            prevArrow: '<button class="slick-prev" aria-label="Previous"></button>',
+            nextArrow: '<button class="slick-next" aria-label="Next"></button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    });
+</script>

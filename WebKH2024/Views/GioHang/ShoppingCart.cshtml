@@ -1,0 +1,181 @@
+﻿@model IEnumerable<WebKH2024.Models.ChiTietDonHang>
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.menu = "Cart";
+}
+<!-- Shoping Cart -->
+@if (Model != null && Model.Any())
+{
+    <div class="row" style="padding-top:60px; padding-bottom:70px; text-align:center">
+        <div class="col-md-9">
+            <h4 style="font-size:25px; padding-bottom :20px; text-align:center; color: crimson">Giỏ Hàng Của Bạn</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Ảnh</th>
+                        <th style="text-align:center">Sản Phẩm</th>
+                        <th style="text-align:center">Màu Sắc</th>
+                        <th style="text-align:center">Size</th>
+                        <th style="text-align:center; width:140px">Giá Tiền</th>
+                        <th style="text-align:center; width:150px">Số Lượng</th>
+                        <th style="text-align:center; width:140px">Thành Tiền</th>
+                        <th style="text-align:center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><img src="@item.HinhAnh" style="width:100px;height:100px; border-radius: 5px;" /></td>
+                            <td>@item.TenSanPham</td>
+                            <td>@item.MauSac</td>
+                            <td>@item.Size</td>
+                            <td style="text-align:right">@string.Format("{0:#,0}", item.GiaBan) đ</td>
+                            <td style="align-items:center">
+                                <input class="form-control quantity-input" type="number" name="SoLuong" value="@item.SoLuong" data-gia-ban="@item.GiaBan" data-san-pham-id="@item.SanPhamID" data-combo-id="@item.ComboID" data-size="@item.Size" data-mau-sac="@item.MauSac">
+                            </td>
+                            <td class="thanh-tien" style="text-align:right">@string.Format("{0:#,0}", item.ThanhTien) đ</td>
+                            <td>
+                                <a href="@Url.Action("XoaKhoiGio", new { SanPhamID = item.SanPhamID })" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="font-weight: 500;">Tổng Tiền : </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center" id="tong-so-luong">@string.Format("{0:#,0}", Model.Sum(m => m.SoLuong))</td>
+                        <td style="text-align:right" id="tong-thanh-tien">@string.Format("{0:#,0}", Model.Sum(m => m.ThanhTien)) đ</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <h4 style="font-size:25px; padding-bottom :20px; text-align:center; color: crimson">Thanh Toán</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Tổng Số Lượng : <span id="tong-so-luong-payment">@string.Format("{0:#,0}", Model.Sum(m => m.SoLuong))</span></th>
+                </tr>
+                <tr>
+                    <th>Tổng Số Tiền : <span id="tong-thanh-tien-payment">@string.Format("{0:#,0}", Model.Sum(m => m.ThanhTien)) đ</span></th>
+                </tr>
+                <tr>
+                    <th>Phí Ship : <span id="phi-ship-payment">@string.Format("{0:#,0}", ViewBag.ShippingFee ?? 0) đ</span></th>
+                </tr>
+                <tr>
+                    <th>Tổng Thanh Toán: <span id="tong-thanh-toan-payment">@string.Format("{0:#,0}", Model.Sum(m => m.ThanhTien) + ViewBag.ShippingFee ?? 0) đ</span></th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <a href="~/Home/Index" class="btn btn-sm btn-warning">Tiếp Tục Mua Hàng</a>
+                        @if (Session["User"] == null)
+                        {
+                            <a href="~/Home/Login" class="btn btn-sm btn-warning">Đăng Nhập Để Thanh Toán</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Checkout", "Payment")" class="btn btn-sm btn-warning">Thanh Toán</a>
+                        }
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+<div class="empty-cart">
+    <img src="https://img.lovepik.com/free-png/20210924/lovepik-shopping-cart-icon-png-image_401363020_wh1200.png" alt="Giỏ hàng trống" width="150">
+    <p>Không có sản phẩm nào trong giỏ hàng. Hãy mua sắm ngay để không bỏ lỡ những ưu đãi hấp dẫn! 🛒</p>
+    <a href="~/Home/Index" class="btn btn-shop-now">🛍️ Mua hàng ngay</a>
+</div>
+}
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.value < 1) {
+                        this.value = 1;
+                    }
+                });
+            });
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const giaBan = parseFloat(this.getAttribute('data-gia-ban'));
+                const sanPhamID = this.getAttribute('data-san-pham-id');
+                const comboID = this.getAttribute('data-combo-id');
+                const soLuong = parseInt(this.value);
+                const size = this.getAttribute('data-size');
+                const mauSac = this.getAttribute('data-mau-sac');
+
+                // Gọi AJAX để cập nhật session
+                $.ajax({
+                    url: '@Url.Action("CapNhatSoLuong", "GioHang")',
+                    type: 'POST',
+                    data: { productId: sanPhamID || comboID, soLuong: soLuong, size: size, mauSac: mauSac },
+                    success: function (response) {
+                        if (response.success) {
+                            const thanhTien = response.thanhTien;
+
+                            // Cập nhật thành tiền cho sản phẩm
+                            const thanhTienCell = input.closest('tr').querySelector('.thanh-tien');
+                            thanhTienCell.textContent = thanhTien.toLocaleString() + ' đ';
+
+                            // Cập nhật tổng tiền
+                            updateTotal();
+                        }
+                    }
+                });
+
+                function updateTotal() {
+                    let totalQuantity = 0;
+                    let totalPrice = 0;
+                    quantityInputs.forEach(input => {
+                        const soLuong = parseInt(input.value);
+                        const giaBan = parseFloat(input.getAttribute('data-gia-ban'));
+                        totalQuantity += soLuong;
+                        totalPrice += giaBan * soLuong;
+                    });
+                    const shippingFee = parseFloat("@ViewBag.ShippingFee");
+                    document.getElementById('tong-so-luong').textContent = totalQuantity.toLocaleString();
+                    document.getElementById('tong-thanh-tien').textContent = totalPrice.toLocaleString() + ' đ';
+                    document.getElementById('tong-so-luong-payment').textContent = totalQuantity.toLocaleString();
+                    document.getElementById('tong-thanh-tien-payment').textContent = totalPrice.toLocaleString() + ' đ';
+                    document.getElementById('tong-thanh-toan-payment').textContent = (totalPrice + shippingFee).toLocaleString() + ' đ';
+                }
+            });
+        });
+    });
+
+</script>
+<style>
+    .empty-cart {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .empty-cart img {
+         max-width: 150px;
+         margin-bottom: 10px;
+     }
+
+     .empty-cart p {
+         font-size: 18px;
+         color: #555;
+         margin-bottom: 10px;
+        }
+
+      .empty-cart .btn {
+         padding: 10px 20px;
+         font-size: 16px;
+        }
+
+</style>

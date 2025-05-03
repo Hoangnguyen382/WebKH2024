@@ -1,0 +1,102 @@
+﻿@model WebKH2024.Models.SanPham
+
+@{
+    ViewBag.Title = "Thêm Mới Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid px-4 mt-4 mb-5">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Thêm Mới Sản Phẩm</h4>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Tên Sản Phẩm</label>
+                        @Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Giá Niêm Yết</label>
+                        @Html.EditorFor(model => model.GiaNiemYet, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.GiaNiemYet, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mô Tả Sản Phẩm</label>
+                    @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 5 })
+                    @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Số Lượng</label>
+                        @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Khuyến Mãi</label>
+                        @Html.EditorFor(model => model.KhuyenMai, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.KhuyenMai, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Danh Mục</label>
+                        <select class="form-select" name="DanhMucID">
+                            <option value="">-- Chọn danh mục --</option>
+                            @foreach (var item in new WebKH2024.Models.mapSanPham().LayDanhMuc())
+                            {
+                                <option value="@item.DanhMucID" @(Model.DanhMucID == item.DanhMucID ? "selected" : "")>@item.TenDanhMuc</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.DanhMucID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Size</label>
+                        @Html.EditorFor(model => model.Size, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Size, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Màu Sắc</label>
+                        @Html.EditorFor(model => model.MauSac, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MauSac, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Trạng Thái</label>
+                        <select class="form-select" name="TrangThai">
+                            <option value="true" @(Model.TrangThai == true ? "selected" : "")>Còn Hàng</option>
+                            <option value="false" @(Model.TrangThai == false ? "selected" : "")>Hết Hàng</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Ngày Tạo</label>
+                        <input type="datetime-local" name="NgayTao" class="form-control" value="@string.Format("{0:yyyy-MM-ddTHH:mm}", Model.NgayTao)" />
+                        @Html.ValidationMessageFor(model => model.NgayTao, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Lưu Sản Phẩm
+                    </button>
+                    @Html.ActionLink("Quay về danh sách", "Index", null, new { @class = "btn btn-secondary ms-2" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

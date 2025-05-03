@@ -1,0 +1,176 @@
+﻿@model WebKH2024.Models.DonHang
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var i = 1;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h4 class="text-primary">Chi Tiết Đơn Hàng</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-info">Ngày Đặt Hàng</th>
+                <td>@Html.DisplayFor(model => model.NgayDatHang)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Địa Chỉ Giao Hàng</th>
+                <td>@Html.DisplayFor(model => model.DiaChiGiaoHang)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Số Điện Thoại</th>
+                <td>@Html.DisplayFor(model => model.SoDienThoai)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Tổng Tiền</th>
+                <td>@string.Format("{0:N0}", Model.TongTien)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Trạng Thái</th>
+                <td>@Html.DisplayFor(model => model.TrangThai)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Người Dùng</th>
+                <td>@Html.DisplayFor(model => model.TaiKhoan.Username)</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <a href="@Url.Action("CapNhat", new { id = Model.DonHangID })" class="btn btn-sm btn-success">Edit</a>
+                    <a href="@Url.Action("Index")" class="btn btn-sm btn-warning"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    <button class="btn btn-primary" onclick="printInvoice()">In Hóa Đơn</button>
+
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4 style="font-size: 18px">Sản Phẩm Combo Khuyến Mãi :</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Ảnh Sản Phẩm</th>
+                    <th>Giá Sản Phẩm</th>
+                    <th>Size</th>
+                    <th>Màu Sắc</th>
+                    <th>Số Lượng</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in new WebKH2024.Models.mapChiTietDonHang().DanhSach(Model.DonHangID))
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.SanPham.TenSanPham</td>
+                        <td><img src="@item.SanPham.HinhAnh" style="width: 70px; height : 70px"></td>
+                        <td>@string.Format("{0:#,0}", item.SanPham.GiaBan)</td>
+                        <td>@item.Size </td>
+                        <td>@item.MauSac</td>
+                        <td>@item.SoLuong</td>
+                        <td>
+                            <a href="~/Admin/DonHang/XoaChiTiet?idChiTiet=@item.ChiTietID&DonHangID=@Model.DonHangID" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?');"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@*Layout hóaddown*@
+<div id="invoiceSection" style="display:none;">
+    <div class="row">
+        <div class="col-md-4">
+            <h4 class="text-primary">Chi Tiết Đơn Hàng</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th class="text-info">Ngày Đặt Hàng</th>
+                    <td>@Html.DisplayFor(model => model.NgayDatHang)</td>
+                </tr>
+                <tr>
+                    <th class="text-info">Địa Chỉ Giao Hàng</th>
+                    <td>@Html.DisplayFor(model => model.DiaChiGiaoHang)</td>
+                </tr>
+                <tr>
+                    <th class="text-info">Số Điện Thoại</th>
+                    <td>@Html.DisplayFor(model => model.SoDienThoai)</td>
+                </tr>
+                <tr>
+                    <th class="text-info">Tổng Tiền</th>
+                    <td>@string.Format("{0:N0}", Model.TongTien)</td>
+                </tr>
+                <tr>
+                    <th class="text-info">Trạng Thái</th>
+                    <td>@Html.DisplayFor(model => model.TrangThai)</td>
+                </tr>
+                <tr>
+                    <th class="text-info">Người Dùng</th>
+                    <td>@Html.DisplayFor(model => model.TaiKhoan.Username)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <h4 style="font-size: 18px">Sản Phẩm Combo Khuyến Mãi :</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Ảnh Sản Phẩm</th>
+                        <th>Giá Sản Phẩm</th>
+                        <th>Size</th>
+                        <th>Màu Sắc</th>
+                        <th>Số Lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in new WebKH2024.Models.mapChiTietDonHang().DanhSach(Model.DonHangID))
+                    {
+                        <tr>
+                            <td>@(i++)</td>
+                            <td>@item.SanPham.TenSanPham</td>
+                            <td><img src="@item.SanPham.HinhAnh" style="width: 70px; height : 70px"></td>
+                            <td>@string.Format("{0:#,0}", item.SanPham.GiaBan)</td>
+                            <td>@item.Size </td>
+                            <td>@item.MauSac</td>
+                            <td>@item.SoLuong</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printInvoice() {
+        var printContent = document.getElementById("invoiceSection").innerHTML;
+        var originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload(); // Load lại trang sau khi in để tránh mất dữ liệu
+    }
+</script>
+<style>
+    media print {
+        body *{
+            visibility: hidden;
+        }
+        #invoiceSection, #invoiceSection * {
+            visibility: visible;
+        }
+        #invoiceSection {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        button {
+            display: none; /* Ẩn nút in khi in hóa đơn */
+        }
+    }
+</style>

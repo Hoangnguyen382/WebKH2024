@@ -1,0 +1,208 @@
+﻿@model IEnumerable<WebKH2024.Models.SanPham>
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.menu = "Shop";
+}
+<style>
+    .promo-label {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: crimson;
+        color: white;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 10;
+    }
+
+    .price-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Khoảng cách giữa giá bán và giá niêm yết */
+    }
+
+    .price-sale {
+        font-size: 15px;
+        font-weight: bold;
+        color: crimson;
+    }
+
+    .price-regular {
+        font-size: 14px;
+        color: #999;
+        text-decoration: line-through;
+    }
+</style>
+
+
+<!-- Product -->
+<div class="bg0 m-t-23 p-b-140">
+    <div class="container">
+        <div class="flex-w flex-sb-m p-b-52">
+            <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 @(ViewBag.DanhMucID == null ? "how-active1" : "")" data-filter="*" data-url="@Url.Action("Index", "Shop")">
+                    All Products
+                </button>
+                @foreach (var danhmuc in ViewBag.DanhMucs)
+                {
+                    <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 @(ViewBag.DanhMucID == danhmuc.DanhMucID ? "how-active1" : "")" data-filter=".@danhmuc.DanhMucID" data-url="@Url.Action("Index", "Shop", new { DanhMucID = danhmuc.DanhMucID })">
+                        @danhmuc.TenDanhMuc
+                    </button>
+                }
+            </div>
+
+            <div class="flex-w flex-c-m m-tb-10">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+                    <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+                    <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                    Filter
+                </div>
+                    <form class="form-inline mb-4" method="get" action="@Url.Action("Index")" style="padding-top: 19px;">
+                        <div class="form-group mr-3">
+                            <input class="form-control" placeholder="Nhập Tên Sản Phẩm" type="text" name="TenSanPham" value="@(ViewBag.TenSanPham)" />
+                        </div>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            <!-- Filter -->
+            <div class="dis-none panel-filter w-full p-t-10">
+                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+                    <div class="filter-col1 p-r-15 p-b-27">
+                        <div class="mtext-102 cl2 p-b-15">
+                            Sort By
+                        </div>
+
+                        <ul>
+
+
+                            <li class="p-b-6">
+                                <a href="@Url.Action("Index", new { sortOrder = "" })"
+                                   class="filter-link stext-106 trans-04 @(ViewBag.SortOrder == "" ? "filter-link-active" : "")">
+                                    Default
+                                </a>
+                            </li>
+                            <li class="p-b-6">
+                                <a href="@Url.Action("Index", new { sortOrder = "giatang" })"
+                                   class="filter-link stext-106 trans-04 @(ViewBag.SortOrder == "giatang" ? "filter-link-active" : "")">
+                                    Price: Low to High
+                                </a>
+                            </li>
+                            <li class="p-b-6">
+                                <a href="@Url.Action("Index", new { sortOrder = "giagiam" })"
+                                   class="filter-link stext-106 trans-04 @(ViewBag.SortOrder == "giagiam" ? "filter-link-active" : "")">
+                                    Price: High to Low
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="filter-col4 p-b-27">
+                        <div class="mtext-102 cl2 p-b-15">
+                            Tags
+                        </div>
+
+                        <div class="flex-w p-t-4 m-r--5">
+                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                Fashion
+                            </a>
+
+                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                Lifestyle
+                            </a>
+
+                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                Denim
+                            </a>
+
+                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                Streetstyle
+                            </a>
+
+                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                Crafts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row isotope-grid">
+            @foreach (var sp in Model)
+            {
+                if (sp.TrangThai == true)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item @sp.DanhMucID">
+                        <!-- Block2 -->
+
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+
+                                <img src="@sp.HinhAnh" alt="IMG-PRODUCT" style="height: 350px; object-fit: cover; ">
+                                @if (sp.KhuyenMai > 0)
+                                {
+                                    <div class="promo-label">SALE @sp.KhuyenMai%</div>
+                                }
+                                <a href="~/Shop/ProductDetail?id= @sp.SanPhamID" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                                    Quick View
+                                </a>
+                            </div>
+
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 17px; font-family: 'Roboto', sans-serif; font-weight: 500; color: #181515 ">
+                                        @sp.TenSanPham
+                                    </a>
+
+                                    <div class="price-wrapper">
+                                        <span class="stext-105 cl3 price-sale">
+                                            @string.Format("{0:#,0}", sp.GiaBan) VNĐ
+                                        </span>
+                                        <span class="stext-106 cl6 price-regular">
+                                            <del>@string.Format("{0:#,0}", sp.GiaNiemYet) VNĐ</del>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04" src="~/assets/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="~/assets/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+
+        <!-- Load more -->
+        <div class="flex-c-m flex-w w-full p-t-45">
+            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+                Load More
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var buttons = document.querySelectorAll('.stext-106');
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var url = button.getAttribute('data-url');
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+    });
+</script>

@@ -1,0 +1,137 @@
+﻿
+    
+    /* Container styles */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+}
+.promo-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: crimson;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+}
+/* Product name styles */
+.mtext-105 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Price styles */
+.mtext-106 {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.price-wrapper {
+    margin-bottom: 15px;
+}
+
+.price-sale {
+    font-weight: 700;
+    color: #e65540; /* Adjust to your sale price color */
+}
+
+.price-regular {
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* Description styles */
+.stext-102 {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Additional information styles */
+.size-205 {
+    font-weight: 600;
+    color: #333;
+    width: 130px;
+    display: inline-block;
+}
+
+.size-206 {
+    color: #666;
+    margin-left: 10px;
+}
+
+/* Reviews styles */
+.flex-w {
+    margin-bottom: 20px;
+}
+
+.size-207 {
+    width: calc(100% - 109px);
+}
+
+.stext-107 {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Social icons styles */
+.flex-m {
+    align-items: center;
+}
+
+.fs-14 {
+    font-size: 14px;
+    color: #333;
+    margin-right: 8px;
+}
+
+/* Tab styles */
+.nav-tabs .nav-item {
+    margin-bottom: 10px;
+}
+
+.nav-link {
+    font-size: 16px;
+    color: #333;
+    border: none;
+    border-radius: 0;
+    padding: 10px 20px;
+    background-color: transparent;
+}
+
+    .nav-link.active {
+        font-weight: 700;
+        color: #e65540; /* Active tab color */
+        border-bottom: 2px solid #e65540; /* Active tab underline color */
+    }
+
+.tab-content {
+    padding-top: 20px;
+}
+
+/* Form styles */
+.w-full {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.stext-101 {
+    font-size: 16px;
+    color: #fff;
+    padding: 12px 25px;
+    background-color: #333;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .stext-101:hover {
+        background-color: #e65540;
+    }
+

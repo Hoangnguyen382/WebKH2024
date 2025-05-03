@@ -1,0 +1,88 @@
+﻿@model WebKH2024.Models.DonHang
+
+@{
+    ViewBag.Title = "Thêm Mới Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4 class="text-center text-primary">Cập Nhật Thông Tin Đơn Hàng</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+            @Html.HiddenFor(model => model.DonHangID)
+        </div>
+    </div>
+
+    <div class="row mb-1">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Tài Khoản :</label>
+                <select class="form-control border-primary" name="TaiKhoanID">
+                    @foreach (var item in new WebKH2024.Models.mapDonHang().ListTaiKhoan())
+                    {
+                        <option value="@item.TaiKhoanID" @(Model.TaiKhoanID == item.TaiKhoanID ? "selected" : "")>@item.Username</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.TaiKhoanID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Người Nhận :</label>
+                @Html.EditorFor(model => model.NguoiNhan, new { htmlAttributes = new { @class = "form-control border-primary", placeholder = "Nhập tên người nhận" } })
+                @Html.ValidationMessageFor(model => model.NguoiNhan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-1">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Ngày Đặt Hàng :</label>
+                <input type="datetime-local" name="NgayDatHang" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayDatHang)" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Địa Chỉ Giao Hàng :</label>
+                @Html.EditorFor(model => model.DiaChiGiaoHang, new { htmlAttributes = new { @class = "form-control border-primary", placeholder = "Nhập địa chỉ giao hàng" } })
+                @Html.ValidationMessageFor(model => model.DiaChiGiaoHang, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-1">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Số Điện Thoại :</label>
+                @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control border-primary", placeholder = "Nhập số điện thoại" } })
+                @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Ghi Chú :</label>
+                @Html.EditorFor(model => model.GhiChu, new { htmlAttributes = new { @class = "form-control border-primary", placeholder = "Nhập ghi chú" } })
+                @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,30 @@
+﻿
+.promo-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: crimson;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Khoảng cách giữa giá bán và giá niêm yết */
+}
+
+.price-sale {
+    font-size: 15px;
+    font-weight: bold;
+    color: crimson;
+}
+
+.price-regular {
+    font-size: 14px;
+    color: #999;
+}

@@ -1,0 +1,167 @@
+﻿
+
+    /* Promotion Combo Section */
+    .promo-combo
+
+{
+    background-color: #FFF;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+/* Banner */
+.promo-banner {
+    position: relative;
+}
+
+.banner-image {
+    background-size: cover;
+    background-position: center;
+    height: 550px;
+    position: relative;
+    text-align: center;
+    color: #fff;
+}
+
+.banner-info {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 5px;
+    color: crimson;
+}
+
+    .banner-info h2 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .banner-info p {
+        font-size: 22px;
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+    .banner-info .btn-shop-now {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #e53935;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .banner-info .btn-shop-now:hover {
+            background-color: #c62828;
+        }
+/* Combo Item Styles */
+.combo-container {
+    position: relative;
+}
+
+.combo-label {
+    color: crimson;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.combo-item {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 15px;
+}
+
+    .combo-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+.combo-pic img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.combo-txt {
+    padding: 15px;
+}
+
+.combo-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+.combo-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #777;
+    height: 40px; /* Đảm bảo kích thước đồng nhất cho mô tả */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng hiển thị */
+    -webkit-box-orient: vertical;
+}
+
+.combo-price {
+    margin-top: 15px;
+}
+
+.price-sale {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e53935;
+}
+
+.btn-view-details {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    .btn-view-details:hover {
+        background-color: #1976D2;
+        color: white;
+    }
+
+.slick-prev, .slick-next {
+    background-color: #1976D2;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .slick-prev:hover, .slick-next:hover {
+        background-color: #0D47A1;
+    }
+
+    .slick-prev::before, .slick-next::before {
+        font-size: 20px;
+        color: white;
+    }
+
+.slick-prev {
+    left: -50px;
+}
+
+.slick-next {
+    right: -50px;
+}
+

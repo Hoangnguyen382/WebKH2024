@@ -1,0 +1,88 @@
+﻿@model WebKH2024.Models.NhapHang
+
+@{
+    ViewBag.Title = "Chi Tiết Nhập Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+}
+<div class="row">
+    <div class="col-md-4">
+        <h4 style="font-size: 19px">Thông tin nhập hàng: @Model.NhaCungCap.TenNhaCungCap</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-info">Ngày Nhập</th>
+                <td>@Model.NgayNhap</td>
+            </tr>
+            <tr>
+                <th class="text-info">Nhà Cung Cấp</th>
+                <td>@Model.NhaCungCap.TenNhaCungCap</td>
+            </tr>
+            <tr>
+                <th class="text-info">Số Điện Thoại</th>
+                <td>@Model.NhaCungCap.SoDienThoai</td>
+            </tr>
+            <tr>
+                <th class="text-info">Email NCC </th>
+                <td>@Model.NhaCungCap.Email</td>
+            </tr>
+            <tr>
+                <th class="text-info">Người Nhận</th>
+                <td>@Model.TaiKhoan.Username</td>
+            </tr>
+            <tr>
+                <th class="text-info">Tổng Tiền</th>
+                <td>@string.Format("{0:#,0}", Model.ChiTietNhapHangs.Sum(m => m.TongTien))</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <a href="~/Admin/NhapHang/CapNhat?id=@Model.NhapHangID" class="btn btn-sm btn-success">Update</i></a>
+                    <a href="~/Admin/NhapHang/Index" class="btn btn-sm btn-warning"><i class="fas fa-arrow-left"></i></a>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4 style="font-size: 18px">Sản Phẩm Nhập Hàng :</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Số Lượng</th>
+                    <th>Giá Nhập</th>
+                    <th>Thành Tiền</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ChiTietNhapHangs)
+                {
+                    var tong = item.SoLuong * item.GiaNhap;
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.TenSanPham</td>
+                        <td>@item.SoLuong</td>
+                        <td>@string.Format("{0:#,0}", item.GiaNhap)</td>
+                        <td>@string.Format("{0:#,0}", tong)</td>
+                        <td>
+                            <a href="~/Admin/NhapHang/CapNhatChiTiet?id=@item.ChiTietNhapHangID" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> |
+                            <a href="~/Admin/NhapHang/XoaChiTiet?idChiTiet=@item.ChiTietNhapHangID&NhapHangID=@Model.NhapHangID" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Tổng Tiền</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@string.Format("{0:#,0}", Model.ChiTietNhapHangs.Sum(m => m.TongTien))</td>
+                </tr>
+            </tfoot>
+        </table>
+        <p>
+            <a href="@Url.Action("ThemChiTiet", new { id = Model.NhapHangID })" class="btn btn-info btn-sm">Thêm Sản Phẩm</a>
+        </p>
+    </div>
+</div>

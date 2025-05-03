@@ -1,0 +1,184 @@
+﻿@model PagedList.IPagedList<WebKH2024.Models.DonHang>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+    var map = (WebKH2024.Models.mapDonHang)ViewBag.Map;
+}
+
+<form class="form-inline mb-4" method="get">
+    <div class="form-group mr-2">
+        <input class="form-control" placeholder="Nhập Tên Tài Khoản" type="text" name="TaiKhoan" value="@(ViewBag.TaiKhoan)" />
+    </div>
+    <div class="form-group mr-2">
+        <input class="form-control" placeholder="Nhập Số Điện Thoại" type="text" name="SoDienThoai" value="@(ViewBag.SoDienThoai)" />
+    </div>
+    <div class="form-group mr-2">
+        <label for="NgayDat">Ngày Đặt Hàng Từ : </label>
+        <input type="date" class="form-control" id="NgayDat" name="NgayDat" value="@(ViewBag.NgayDat)" />
+    </div>
+    <button class="btn btn-primary" type="submit">Tìm</button>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>STT</th>
+                <th>Tài Khoản</th>
+                <th>Ngày Đặt</th>
+                <th>Địa Chỉ</th>
+                <th>Số Điện Thoại</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái</th>
+                <th>Thanh Toán</th>
+                <th>Chuyển Tiền</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        @{
+            var startingIndex = (Model.PageNumber - 1) * Model.PageSize + 1;
+            i = startingIndex;
+        }
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(i++)</td>
+                    <td>@item.TaiKhoan.Username</td>
+                    <td>@string.Format("{0:dd-MM-yyyy}", item.NgayDatHang)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DiaChiGiaoHang)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                    <td>@string.Format("{0:#,0}", item.TongTien)</td>
+                    <td>
+                        <div style="width:180px" class="row-inline">
+                            <span>@Html.Raw(map.TrangThaiDonHangBadge((int)item.TrangThai))</span>
+                            @if (item.TrangThai == 1 || item.TrangThai == 2)
+                            {
+                                <span class="divider">|</span>
+                                <a href="javascript:void(0)" class="change-link" onclick="MoModalCapNhatTrangThai(@item.DonHangID, @item.TrangThai)">Thay đổi</a>
+                            }
+                        </div>
+                    </td>
+
+
+                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                    <td>@Html.Raw(ViewBag.Map.TrangThaiThanhToan(item.PaymentStatus))</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="@Url.Action("ChiTiet", new { id = item.DonHangID })" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                            <a href="@Url.Action("CapNhat", new { id = item.DonHangID })" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                            <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="Delete(@item.DonHangID)"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div class="pagination-container d-flex justify-content-left">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, TenSanPham = ViewBag.TenSanPham, DanhMucID = ViewBag.DanhMucID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }),
+                    PagedListRenderOptions.Classic)
+</div>
+<div class="modal fade" id="modalCapNhatTrangThai" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật trạng thái đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="orderIdToUpdate" />
+                <select id="trangThaiMoi" class="form-control">
+                    <!-- Các option sẽ được gán bằng JS dựa trên trạng thái hiện tại -->
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="CapNhatTrangThai()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .pagination-container {
+        margin-top: 20px;
+        float: right;
+    }
+
+        .pagination-container .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+            .pagination-container .pagination li {
+                margin: 0 5px;
+            }
+
+                .pagination-container .pagination li a {
+                    color: #007bff;
+                    text-decoration: none;
+                    padding: 5px 10px;
+                    border: 1px solid #dee2e6;
+                    border-radius: 4px;
+                }
+
+                .pagination-container .pagination li.active a {
+                    background-color: #007bff;
+                    color: white;
+                }
+</style>
+@section script{
+    <script>
+        function Delete(id) {
+            if (confirm("Xóa dữ liệu?") == true) {
+                location.href = "/Admin/DonHang/Xoa?id=" + id;
+            }
+            else {
+                //Không xóa
+            }
+        }
+        function MoModalCapNhatTrangThai(id, trangThaiHienTai) {
+            $("#orderIdToUpdate").val(id);
+
+            var options = "";
+            if (trangThaiHienTai == 1) {
+                options += "<option value='2'>Chờ xử lý</option>";
+                options += "<option value='5'>Hủy</option>";
+            } else if (trangThaiHienTai == 2) {
+                options += "<option value='3'>Hoàn Thành</option>";
+                options += "<option value='4'>Hoàn Tiền</option>";
+                options += "<option value='5'>Hủy</option>";
+            }
+
+            $("#trangThaiMoi").html(options);
+            $("#modalCapNhatTrangThai").modal("show");
+        }
+
+        function CapNhatTrangThai() {
+            var id = $("#orderIdToUpdate").val();
+            var trangThai = $("#trangThaiMoi").val();
+
+            $.ajax({
+                url: '/Admin/DonHang/CapNhatTrangThai',
+                type: 'POST',
+                data: {
+                    donHangID: id,
+                    trangThaiMoi: trangThai
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Cập nhật thành công!");
+                        location.reload();
+                    } else {
+                        alert(response.message || "Cập nhật thất bại.");
+                    }
+                }
+            });
+
+        }
+    </script>
+}

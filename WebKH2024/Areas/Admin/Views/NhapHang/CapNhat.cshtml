@@ -1,0 +1,93 @@
+﻿@model WebKH2024.Models.NhapHang
+
+@{
+    ViewBag.Title = "Nhập Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Cập Nhật Nhập Hàng</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.NhapHangID)
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Nhà Cung Cấp :</label>
+        <div class="col-md-4">
+            <select class="form-control" name="NhaCungCapID">
+                <option value="">Chọn Nhà Cung Cấp</option>
+                @foreach (var item in new WebKH2024.Models.mapNhapHang().ListNCC())
+                {
+                    <option value="@item.NhaCungCapID" @(Model.NhaCungCapID == item.NhaCungCapID ? "selected" : "")>@item.TenNhaCungCap</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.NhaCungCapID, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Tài Khoản Nhận</label>
+        <div class="col-md-4">
+            <select class="form-control" name="TaiKhoanID">
+                <option value="">Chọn Tài Khoản Nhận Hàng </option>
+                @foreach (var item in new WebKH2024.Models.mapNhapHang().ListTaiKhoan())
+                {
+                    <option value="@item.TaiKhoanID" @(Model.NhaCungCapID == item.TaiKhoanID ? "selected" : "")>@item.Username</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.TaiKhoanID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Ngày Nhập :</label>
+        <div class="col-md-4">
+            <input type="datetime-local" name="NgayNhap" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayNhap)" />
+            @Html.ValidationMessageFor(model => model.NgayNhap, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Ngày Thanh Toán :</label>
+        <div class="col-md-4">
+            <input type="datetime-local" name="NgayThanhToan" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayThanhToan)" />
+            @Html.ValidationMessageFor(model => model.NgayThanhToan, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Trạng Thái Nhận Hàng :</label>
+        <div class="col-md-4">
+            <select class="form-control" name="TinhTrang">
+                <option value="1" @(Model.TinhTrang == 1 ? "selected" : "")>Chưa Nhận Hàng</option>
+                <option value="2" @(Model.TinhTrang == 2 ? "selected" : "")>Đang Xử Lý</option>
+                <option value="3" @(Model.TinhTrang == 3 ? "selected" : "")>Đã Nhận Hàng</option>
+            </select>
+            @Html.ValidationMessageFor(model => model.TinhTrang, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Trạng Thái Thanh Toán :</label>
+        <div class="col-md-4">
+            <select class="form-control" name="ThanhToan">
+                <option value="">Chọn Tình Trạng Thanh Toán</option>
+                <option value="true" @(Model.ThanhToan == true ? "selected" : "")>Đã Thanh Toán</option>
+                <option value="false" @(Model.ThanhToan == false ? "selected" : "")>Chưa Thanh Toán</option>
+            </select>
+            @Html.ValidationMessageFor(model => model.ThanhToan, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Ghi Chú :</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.GhiChu, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

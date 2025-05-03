@@ -1,0 +1,192 @@
+﻿@model PagedList.IPagedList<WebKH2024.Models.SanPham>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var i = 1;
+}
+
+<h4>Danh Mục Sản Phẩm</h4>
+<form class="form-inline mb-4" method="get">
+    <div style="position: relative;">
+        <input type="text" id="searchBox" class="form-control" placeholder="Nhập tên sản phẩm..." autocomplete="off">
+        <div id="searchResults" class="list-group"
+             style="position: absolute; width: 100%; background: white; z-index: 1000; display: none; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); border-radius: 5px;">
+        </div>
+    </div>
+
+
+    <div class="form-group mr-2">
+        <select class="form-control" name="DanhMucID">
+            <option value="">Chọn danh mục</option>
+            @foreach (var item in new WebKH2024.Models.mapSanPham().LayDanhMuc())
+            {
+                <option value="@item.DanhMucID" @((int?)ViewBag.DanhMucID == item.DanhMucID ? "selected" : "")>@item.TenDanhMuc</option>
+            }
+        </select>
+    </div>
+    <div class="form-group mr-2">
+        <label for="StartDate">Ngày bắt đầu:</label>
+        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@(ViewBag.StartDate)" />
+    </div>
+    <div class="form-group mr-2">
+        <label for="EndDate">Ngày kết thúc:</label>
+        <input type="date" class="form-control" id="EndDate" name="EndDate" value="@(ViewBag.EndDate)" />
+    </div>
+    <button class="btn btn-primary" type="submit">Tìm</button>
+    <a class="btn btn-success ml-auto" href="@Url.Action("ThemMoi")"><i class="fas fa-plus"></i></a>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Giá niêm yết</th>
+                <th scope="col">Khuyến Mãi</th>
+                <th scope="col">Giá bán</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Danh mục</th>
+                <th scope="col">Hình ảnh</th>
+                <th scope="col">Size</th>
+                <th scope="col">Màu sắc</th>
+                <th scope="col">Ngày Tạo</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        @{
+            var startingIndex = (Model.PageNumber - 1) * Model.PageSize + 1;
+            i = startingIndex;
+        }
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var giakm = (item.GiaNiemYet) * item.KhuyenMai / 100;
+                var giaban = item.GiaNiemYet - giakm;
+                <tr>
+                    <td>@i</td>
+                    <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
+                    <td>@string.Format("{0:#,0}", item.GiaNiemYet)</td>
+                    <td>@item.KhuyenMai%</td>
+                    <td>@string.Format("{0:#,0}", giaban)</td>
+                    <td>@item.SoLuong</td>
+                    <td>@Html.DisplayFor(modelItem => item.DanhMuc.TenDanhMuc)</td>
+                    <td><img src="@item.HinhAnh" style="width: 70px; height : 70px"></td>
+                    <td>@Html.DisplayFor(modelItem => item.Size)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MauSac)</td>
+                    <td>@string.Format("{0:dd-MM-yyyy}", item.NgayTao)</td>
+                    <td>
+                        @if (item.TrangThai == true)
+                        {
+                            <span class="badge badge-success">Còn Hàng</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Hết Hàng</span>
+                        }
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="@Url.Action("ChiTiet", new { id = item.SanPhamID })" class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></a>
+                            <a href="@Url.Action("CapNhat", new { id = item.SanPhamID })" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                            <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="Delete(@item.SanPhamID)"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+<div class="pagination-container d-flex justify-content-left">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, TenSanPham = ViewBag.TenSanPham, DanhMucID = ViewBag.DanhMucID, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }),
+                PagedListRenderOptions.Classic)
+</div>
+<style>
+    .pagination-container {
+        margin-top: 20px;
+        float: right;
+    }
+
+        .pagination-container .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+            .pagination-container .pagination li {
+                margin: 0 5px;
+            }
+
+                .pagination-container .pagination li a {
+                    color: #007bff;
+                    text-decoration: none;
+                    padding: 5px 10px;
+                    border: 1px solid #dee2e6;
+                    border-radius: 4px;
+                }
+
+                .pagination-container .pagination li.active a {
+                    background-color: #007bff;
+                    color: white;
+                }
+</style>
+@section script{
+    <script>
+        function Delete(id) {
+            if (confirm("Xóa dữ liệu?") == true) {
+                location.href = "/Admin/SanPham/Xoa?id=" + id;
+            }
+            else {
+                //Không xóa
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#searchBox").on("keyup", function () {
+                let keyword = $(this).val().trim();
+                if (keyword.length === 0) {
+                    $("#searchResults").hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: "/SanPham/TimKiemSanPham",
+                    type: "GET",
+                    data: { keyword: keyword },
+                    success: function (response) {
+                        if (response.length > 0) {
+                            let html = "";
+                            response.forEach(sp => {
+                                html += `
+                                <a href="/Admin/SanPham/ChiTiet/${sp.SanPhamID}" class="list-group-item list-group-item-action"
+                                   style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
+                                    <img src="${sp.HinhAnh}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                    <div>
+                                        <h6 class="mb-1 text-dark">${sp.TenSanPham}</h6>
+                                        <small class="text-danger font-weight-bold">${sp.GiaBan} đ</small>
+                                    </div>
+                                </a>
+                            `;
+                            });
+                            $("#searchResults").html(html).show();
+                        } else {
+                            $("#searchResults").hide();
+                        }
+                    }
+                });
+            });
+            $(document).on("click", function (e) {
+                if (!$(e.target).closest("#searchBox, #searchResults").length) {
+                    $("#searchResults").hide();
+                }
+            });
+        });
+    </script>
+
+
+}

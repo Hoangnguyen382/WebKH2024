@@ -1,0 +1,73 @@
+﻿@model WebKH2024.Models.DonHang
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var i = 1;
+    var map = new WebKH2024.Models.mapDonHang();
+}
+<div class="row">
+    <div class="col-md-4">
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-info">Tên Người Mua</th>
+                <td>@Html.DisplayFor(model => model.TaiKhoan.Username)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Ngày Đặt Hàng</th>
+                <td>@string.Format("{0:dd-MM-yyyy hh:mm}", Model.NgayDatHang)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Địa Chỉ Giao Hàng</th>
+                <td>@Html.DisplayFor(model => model.DiaChiGiaoHang)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Số Điện Thoại</th>
+                <td>@Html.DisplayFor(model => model.SoDienThoai)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Tổng Tiền</th>
+                <td>@string.Format("{0:#,0}", Model.TongTien)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Trạng Thái</th>
+                <td>@Html.Raw(map.TinhTrangDonHang(Model.TrangThai))</td>
+            </tr>
+
+            <tr>
+                <th colspan="2">
+                    <a href="@Url.Action("Index")" class="btn btn-sm btn-warning"><i class="fas fa-arrow-left"></i> Back to List</a>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4 style="font-size: 18px">Chi Tiết Đơn Hàng</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Ảnh Sản Phẩm</th>
+                    <th>Giá Sản Phẩm</th>
+                    <th>Size</th>
+                    <th>Màu Sắc</th>
+                    <th>Số Lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in new WebKH2024.Models.mapChiTietDonHang().DanhSach(Model.DonHangID))
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.SanPham.TenSanPham</td>
+                        <td><img src="@item.SanPham.HinhAnh" style="width: 70px; height : 70px"></td>
+                        <td>@string.Format("{0:#,0}", item.SanPham.GiaBan)</td>
+                        <td>@item.Size</td>
+                        <td>@item.MauSac</td>
+                        <td>@item.SoLuong</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

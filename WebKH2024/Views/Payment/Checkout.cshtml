@@ -1,0 +1,66 @@
+﻿@model List<WebKH2024.Models.ChiTietDonHang>
+@{
+    ViewBag.Title = "Thanh Toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebKH2024.Models.ShopQuanAoEntities db = new WebKH2024.Models.ShopQuanAoEntities();
+}
+<div class="container">
+    <div class="row">
+        <!-- Cột thông tin người dùng và chi tiết đơn hàng -->
+        <div class="col-md-8" style="margin-bottom:30px">
+            <h2 style="text-align:center">Thông tin đặt hàng</h2>
+            <h4 style="text-align:center; font-size:13px;color:crimson">Bạn vui lòng nhập thông tin và kiểm tra lại đơn hàng!</h4>
+            <form method="post" action="@Url.Action("Checkout", "Payment")">
+                <div class="form-group">
+                    <label for="NguoiNhan">Người Nhận</label>
+                    <input type="text" class="form-control" id="NguoiNhan" name="NguoiNhan" placeholder="Nhập tên người nhận" required />
+                </div>
+                <div class="form-group">
+                    <label for="DiaChiGiaoHang">Địa chỉ giao hàng</label>
+                    <input type="text" class="form-control" id="DiaChiGiaoHang" name="DiaChiGiaoHang" placeholder="Nhập địa chỉ giao hàng" required />
+                </div>
+                <div class="form-group">
+                    <label for="SoDienThoai">Số điện thoại liên hệ</label>
+                    <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" placeholder="Nhập số điện thoại" required />
+                </div>
+                <div class="form-group">
+                    <label for="GhiChu">Ghi chú</label>
+                    <textarea class="form-control" id="GhiChu" name="GhiChu" placeholder="Thêm ghi chú cho đơn hàng của bạn" rows="3"></textarea>
+                </div>
+                <!-- Payment Method-->
+                <h4 style="font-size:17px; margin-top:30px; color:crimson">Chọn Phương Thức Thanh Toán</h4>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" id="COD" value="COD" checked />
+                        <label class="form-check-label" for="COD">
+                            Thanh toán khi nhận hàng (COD)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" id="Momo" value="Momo" />
+                        <label class="form-check-label" for="Momo">
+                            Thanh toán qua Momo
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px">Đặt hàng ngay</button>
+            </form>
+        </div>
+        <!-- Cột thông tin thanh toán -->
+        <div class="col-md-4">
+            <h4 style="font-size:25px; padding-bottom :20px; text-align:center; color: crimson">Thông Tin Thanh Toán</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Tổng Giá Tiền : @string.Format("{0:#,0}", @ViewBag.TotalPrice) đ</th>
+                </tr>
+                <tr>
+                    <th>Phí Ship : @string.Format("{0:#,0}", ViewBag.ShippingFee ?? 0) đ</th>
+                </tr>
+                <tr>
+                    <th>Tổng Thanh Toán: @string.Format("{0:#,0}", ViewBag.TotalAmount) đ</th>
+                </tr>
+            </table>
+            <span class="text-danger">@TempData["ErrorMessage"]</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+﻿@model WebKH2024.Models.ComboKhuyenMai
+
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h4 class="text-primary">Chi Tiết Combo Khuyến Mãi</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-info">Tên Combo</th>
+                <td>@Html.DisplayFor(model => model.TenCombo)</td>
+            </tr>
+
+            <tr>
+                <th class="text-info">Giá Combo</th>
+                <td>@Html.DisplayFor(model => model.GiaCombo)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Số Lượng</th>
+                <td>@Html.DisplayFor(model => model.SoLuong)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Ngày Bắt Đầu</th>
+                <td>@Html.DisplayFor(model => model.NgayBatDau)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Ngày Kết Thúc</th>
+                <td>@Html.DisplayFor(model => model.NgayKetThuc)</td>
+            </tr>
+            <tr>
+                <th class="text-info">Trạng Thái</th>
+                <td>
+                    <p class="form-control-plaintext">
+                        @if (Model.TrangThai == true)
+                        {
+                            <span class="text-success">Hoạt Động</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Khóa</span>
+                        }
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-info">Mô Tả</th>
+                <td>@Html.DisplayFor(model => model.MoTa)</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <a href="~/Admin/ComBoKhuyenMai/CapNhat?id=@Model.ComboID" class="btn btn-sm btn-success">Update</a>
+                    <a href="~/Admin/ComBoKhuyenMai/Index" class="btn btn-sm btn-warning"><i class="fas fa-arrow-left"></i></a>
+                    <a href="/Admin/ComBoKhuyenMai/CapNhatAnh?id=@Model.ComboID" class="btn btn-sm btn-danger">Upload Image </a>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4 style="font-size: 18px">Sản Phẩm Combo Khuyến Mãi :</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Ảnh Sản Phẩm</th>
+                    <th>Giá Sản Phẩm</th>
+                    <th>Size</th>
+                    <th>Màu Sắc</th>
+                    <th>Số Lượng</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in new WebKH2024.Models.mapChiTietCombo().DanhSach(Model.ComboID))
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.SanPham.TenSanPham</td>
+                        <td><img src="@item.SanPham.HinhAnh" style="width: 70px; height : 70px"></td>
+                        <td>@string.Format("{0:#,0}", item.SanPham.GiaBan)</td>
+                        <td>@item.SoLuong</td>
+                        <td>@item.Size</td>
+                        <td>@item.MauSac</td>
+                        <td>
+                            <a href="~/Admin/ComBoKhuyenMai/CapNhatChiTiet?id=@item.ChiTietComboID" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> |
+                            <a href="~/Admin/ComBoKhuyenMai/XoaChiTiet?idChiTiet=@item.ChiTietComboID&ComboID=@Model.ComboID" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi combo?');"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>
+            <a href="@Url.Action("ThemChiTietCombo", new { id = Model.ComboID })" class="btn btn-info btn-sm">Thêm Sản Phẩm</a>
+        </p>
+    </div>
+</div>

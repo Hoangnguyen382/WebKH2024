@@ -1,0 +1,64 @@
+﻿@model WebKH2024.Models.ComboKhuyenMai
+
+@{
+    ViewBag.Title = "CapNhat";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ComboID)
+    <input type="hidden" name="HinhAnh" value="@Model.HinhAnh" />
+
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Tên Combo:</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TenCombo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TenCombo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Giá Bán:</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.GiaCombo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GiaCombo, "", new { @class = "text-danger" })
+        </div>
+
+        <label class="control-label col-md-2" style="color:black">Số Lượng:</label>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Ngày Bắt Đầu:</label>
+        <div class="col-md-4">
+            <input type="datetime-local" name="NgayBatDau" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayBatDau)" />
+            @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
+        </div>
+        <label class="control-label col-md-2" style="color:black">Ngày Kết Thúc:</label>
+        <div class="col-md-4">
+            <input type="datetime-local" name="NgayKetThuc" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayKetThuc)" />
+            @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-2" style="color:black">Mô Tả Sản Phẩm</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 5 })
+            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-offset-2 ">
+            <input type="submit" value="Save" class="btn btn-success" /> |
+            <a href="~/Admin/ComBoKhuyenMai/Index" class="btn btn-warning"><i class="fas fa-arrow-left"></i></a>
+        </div>
+    </div>
+</div>
+}

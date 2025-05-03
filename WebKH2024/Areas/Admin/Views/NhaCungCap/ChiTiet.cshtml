@@ -1,0 +1,68 @@
+﻿@model WebKH2024.Models.NhaCungCap
+
+@{
+    ViewBag.Title = "Chi Tiết Nhà Cung Cấp";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Thông Tin Nhà Cung Cấp</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Tên Nhà Cung Cấp :</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.TenNhaCungCap)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Địa Chỉ :</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.DiaChi)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Số Điện Thoại :</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.SoDienThoai)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Email :</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.Email)</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="font-weight-bold">STK:</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.SoTaiKhoan)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Ngân Hàng :</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.NganHang)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Ngày Tạo</label>
+                        <p class="form-control-plaintext">@Html.DisplayFor(model => model.NgayTao)</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Trạng Thái Hoạt Động :</label>
+                        <p class="form-control-plaintext">
+                            @if(Model.Active == true)
+                            {
+                                <span class="text-success">Hoạt Động</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Khóa</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-left">
+            <p>
+                @Html.ActionLink("Update", "CapNhat", new { id = Model.NhaCungCapID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+            </p>
+        </div>
+    </div>
+</div>

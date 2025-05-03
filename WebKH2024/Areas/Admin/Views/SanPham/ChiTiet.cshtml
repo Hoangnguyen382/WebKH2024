@@ -1,0 +1,77 @@
+﻿@model WebKH2024.Models.SanPham
+
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-primary">Chi Tiết Sản Phẩm</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="text-info">Tên Sản Phẩm</th>
+                        <td>@Html.DisplayFor(model => model.TenSanPham)</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-info">Giá Bán</th>
+                        <td>@Html.DisplayFor(model => model.GiaBan)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Số Lượng</th>
+                        <td>@Html.DisplayFor(model => model.SoLuong)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Danh Mục ID</th>
+                        <td>@Html.DisplayFor(model => model.DanhMuc.TenDanhMuc)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Size</th>
+                        <td>@Html.DisplayFor(model => model.Size)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Màu Sắc</th>
+                        <td>@Html.DisplayFor(model => model.MauSac)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Khuyễn Mãi</th>
+                        <td>@Html.DisplayFor(model => model.KhuyenMai)%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Trạng Thái</th>
+                        <td>@Html.DisplayFor(model => model.TrangThai)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Ngày Tạo</th>
+                        <td>@Html.DisplayFor(model => model.NgayTao)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-info">Mô Tả</th>
+                        <td>@Html.DisplayFor(model => model.MoTa)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 text-center">
+            <h4 style="font-size: 17px">Ảnh Sản Phẩm: @Html.DisplayFor(model => model.TenSanPham)</h4>
+            <img src="@Model.HinhAnh" class="img-fluid" style="width: 300px; height: 300px" />
+            <br />
+            <br />
+            <a href="/Admin/SanPham/CapNhatAnh?id=@Model.SanPhamID" class="btn btn-danger">Upload </a>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                @Html.ActionLink("Edit", "CapNhat", new { id = Model.SanPhamID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-default" })
+            </p>
+        </div>
+    </div>
+</div>

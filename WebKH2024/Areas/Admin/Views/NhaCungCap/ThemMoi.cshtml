@@ -1,0 +1,82 @@
+﻿@model WebKH2024.Models.NhaCungCap
+
+@{
+    ViewBag.Title = "ThemMoi";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Thêm Mới Nhà Cung Cấp</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group row">
+            <label class="control-label col-md-2" style="color:black">Tên Nhà Cung Cấp:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenNhaCungCap, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TenNhaCungCap, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2" style="color:black">Địa Chỉ:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2" style="color:black">Số Điện Thoại:</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
+            </div>
+            <label class="control-label col-md-2" style="color:black">Email Nhà Cung Cấp:</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2" style="color:black">Số Tài Khoản:</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.SoTaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SoTaiKhoan, "", new { @class = "text-danger" })
+            </div>
+            <label class="control-label col-md-2" style="color:black">Ngân Hàng:</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.NganHang, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NganHang, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2" style="color:black">Ngày Tạo:</label>
+            <div class="col-md-4">
+                <input type="datetime-local" name="NgayTao" class="form-control" value="@string.Format("{0:yyyy-MM-dd HH:mm}", Model.NgayTao)" />
+                @Html.ValidationMessageFor(model => model.NgayTao, "", new { @class = "text-danger" })
+            </div>
+            <label class="control-label col-md-2" style="color:black">Trạng Thái:</label>
+            <div class="col-md-4">
+                <select class="form-control" name="Active">
+                    <option value="true" @(Model.Active == true ? "selected" : "")>Hoạt Động</option>
+                    <option value="false" @(Model.Active == false ? "selected" : "")>Khóa</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại Danh Sách", "Index")
+</div>
